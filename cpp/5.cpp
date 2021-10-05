@@ -4,7 +4,7 @@
 
 int main()
 {
-	char original_text[] = " Saya Sedang ,Mengikuti kuliah Algoritma Pemograman . Saya lapar!b72311.a341asdasda,2334 .";
+	char original_text[] = " Saya Sedang ,Mengikuti kuliah Algoritma Pemograman    !!!!!!   !   .Saya lapar!b72311.a341asdasda,2334 .";
 	char fixed_text[100] = "";
 	int fixed_pointer = 0;
 
@@ -29,8 +29,8 @@ int main()
 		}
 	}
 
-	bool found_space = false;
-	bool found_punct = false;
+	bool prev_is_space = false;
+	bool prev_is_punct = false;
 	bool next_upper = false;
 	char space = ' ';
 	while (original_text[i])
@@ -40,46 +40,40 @@ int main()
 		// check spaces
 		if (original_text[i] == ' ')
 		{
-			found_punct = false;
+			prev_is_punct = false;
 
-			// Ignore traling space
-			if (found_space)
+			// Traling space
+			if (prev_is_space)
 			{
-				// If next char of trailing space is punctuations then remove space.
+				// If next char of trailing space is punctuation then remove space.
 				char next_char = original_text[i + 1];
-				if (next_char)
+				if (next_char == ',' || next_char == '.' || next_char == '!' || next_char == '?')
 				{
-					if (next_char == ',' || next_char == '.' || next_char == '!' || next_char == '?')
-					{
-						fixed_pointer = fixed_pointer - 1;
-					}
+					fixed_pointer = fixed_pointer - 1;
 				}
 				continue;
 			}
 
 			// Remove space before punctuations
 			char next_char = original_text[i + 1];
-			if (next_char)
+			if (next_char == ',' || next_char == '.' || next_char == '!' || next_char == '?')
 			{
-				if (next_char == ',' || next_char == '.' || next_char == '!' || next_char == '?')
-				{
-					continue;
-				}
+				continue;
 			}
 
 			// append
 			fixed_text[fixed_pointer] = space;
 			fixed_pointer = fixed_pointer + 1;
 
-			found_space = true;
+			prev_is_space = true;
 		}
 		// check punctuations
 		else if (original_text[i] == ',' || original_text[i] == '.' || original_text[i] == '!' || original_text[i] == '?')
 		{
-			found_space = false;
+			prev_is_space = false;
 
 			// Ignore trailing punctuations
-			if (found_punct)
+			if (prev_is_punct)
 			{
 				continue;
 			}
@@ -104,13 +98,13 @@ int main()
 			{
 				next_upper = true;
 			}
-			found_punct = true;
+			prev_is_punct = true;
 		}
 		// check alpha numerics
 		else if (isalnum(original_text[i]))
 		{
-			found_space = false;
-			found_punct = false;
+			prev_is_space = false;
+			prev_is_punct = false;
 
 			if (next_upper)
 			{
