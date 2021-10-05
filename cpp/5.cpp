@@ -4,7 +4,7 @@
 
 int main()
 {
-	char original_text[] = " Saya Sedang ,Mengikuti kuliah Algoritma Pemograman . Saya lapar! 672311.2341asdasda,2334 .";
+	char original_text[] = " Saya Sedang ,Mengikuti kuliah Algoritma Pemograman . Saya lapar!b72311.a341asdasda,2334 .";
 	char fixed_text[100] = "";
 	int fixed_pointer = 0;
 
@@ -45,6 +45,15 @@ int main()
 			// Ignore traling space
 			if (found_space)
 			{
+				// If next char of trailing space is punctuations then remove space.
+				char next_char = original_text[i + 1];
+				if (next_char)
+				{
+					if (next_char == ',' || next_char == '.' || next_char == '!' || next_char == '?')
+					{
+						fixed_pointer = fixed_pointer - 1;
+					}
+				}
 				continue;
 			}
 
