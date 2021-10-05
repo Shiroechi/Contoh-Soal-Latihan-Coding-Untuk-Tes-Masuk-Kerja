@@ -1,138 +1,123 @@
 #include<stdio.h>
-#include<math.h>
-#include<conio.h> 
-#include<stdlib.h> 
-#include<time.h>	
+#include<ctype.h>
 #include<string.h>
-#include<ctype.h> 
 
-void main()
+int main()
 {
-	char kalimat[100], kalimat1[50];
-	int index, counter;
-	int huruf;
-	index = 0; counter = 0;
+	char original_text[] = " Saya Sedang ,Mengikuti kuliah Algoritma Pemograman . Saya lapar! 672311.2341asdasda,2334 .";
+	char fixed_text[100] = "";
+	int fixed_pointer = 0;
 
-	//printf("masukan kalimat :");
-	//gets(kalimat);
-
-	strcpy(kalimat, "    kuliah  Algoritma  Pemograman  .   Saya   lapar   !");
-	puts(kalimat);
-	strlwr(kalimat);
-	printf("\n");
-
-	printf("panjang kalimat : %d \n", strlen(kalimat));
-
-	//rapikan kalimat dengan space tidak beraturan.
-	for (int i = 0; i <= strlen(kalimat); i++)
+	int i = 0;
+	// trim start
+	while (original_text[i]) 
 	{
-		if (isspace(kalimat[i]) && isalpha(kalimat[i + 1]) && counter == 0)
+		if (original_text[i] != ' ')
 		{
-			huruf = kalimat[i + 1];
-			kalimat1[index] = huruf;
-			index++;
-			i++;
-			counter++;
-			//printf("%c \n", kalimat[i]);
-			//printf("%c \n", kalimat1[index]);
+			break;
 		}
-		else if (isspace(kalimat[i]) && isalpha(kalimat[i + 1]))
+		i++;
+	}
+
+	// Fix first character case
+	if (original_text[i])
+	{
+		if (isalpha(original_text[i]))
 		{
-			huruf = ' ';
-			kalimat1[index] = huruf;
-			index++;
-			huruf = kalimat[i + 1];
-			kalimat1[index] = huruf;
-			index++;
-			i++;
-			//printf("%c \n", kalimat[i]);
-			//printf("%c \n", kalimat1[index]);
-		}
-		/*else if (isspace(kalimat[i]) && isspace(kalimat[i + 1]))
-		{
-			i++;
-		}*/
-		else if (isalpha(kalimat[i]))
-		{
-			/*if (kalimat[i - 1] == ' ')
-			{
-				huruf = ' ';
-				kalimat1[index] = huruf;
-				index++;
-			}*/
-			huruf = kalimat[i];
-			kalimat1[index] = huruf;
-			index++;
-			//printf("%c \n", kalimat[i]);
-			//printf("%c \n", kalimat1[index]);
-		}
-		else if (kalimat[i] == '!' || kalimat[i] == '.' || kalimat[i] == ',' || kalimat[i] == '?')
-		{
-			huruf = kalimat[i];
-			kalimat1[index] = huruf;
-			index++;
-		}
-		/*else if (isalpha(kalimat[i]) && isspace(kalimat[i + 1]) && (kalimat[i + 1] == '!' || kalimat[i + 1] == '.' || kalimat[i + 1] == ',' || kalimat[i + 1] == '?'))
-		{
-			huruf = kalimat[i + 1];
-			kalimat1[index] = huruf;
-			index++;
-		}
-		else if (isspace(kalimat[i]) && isalpha(kalimat[i + 1]) && (kalimat[i - 1] == '!' || kalimat[i - 1] == '.' || kalimat[i - 1] == ',' || kalimat[i - 1] == '?'))
-		{
-			huruf = ' ';
-			kalimat1[index] = huruf;
-			index++;
-			huruf = kalimat[i + 1];
-			kalimat1[index] = huruf;
-			index++;
-			i++;
-		}*/
-		else if (i == strlen(kalimat))
-		{
-			//huruf = kalimat[i];
-			//kalimat1[index] = huruf;
-			//index++;
-			huruf = '\0';
-			kalimat1[index] = huruf;
+			fixed_text[fixed_pointer] = toupper(original_text[i]);
+			fixed_pointer = fixed_pointer + 1;
 		}
 	}
-	printf("Hasil 1 = \n");
-	puts(kalimat1);
-	printf("\n");
 
-	printf("hasil akhir = \n");
-	for (int i = 0; i <= strlen(kalimat1); i++)
+	bool found_space = false;
+	bool found_punct = false;
+	bool next_upper = false;
+	char space = ' ';
+	while (original_text[i])
 	{
-		if (i == 0)
+		i++;
+
+		// check spaces
+		if (original_text[i] == ' ')
 		{
-			printf("%c", toupper(kalimat1[i]));
-		}
-		/*else if (kalimat[i] == '?' || kalimat[i] == '.' || kalimat[i] == ',' || kalimat[i] == '!')
-		{
-			if (kalimat[i] == '!' || kalimat[i] == '?' || kalimat[i] == '.')
+			found_punct = false;
+
+			// Ignore traling space
+			if (found_space)
 			{
-				printf("%c", kalimat1[i]);
-				printf("%c", kalimat1[i + 1]);
-				i++;
-				i++;
-				printf("%c", toupper(kalimat1[i]));
+				continue;
+			}
+
+			// Remove space before punctuations
+			char next_char = original_text[i + 1];
+			if (next_char)
+			{
+				if (next_char == ',' || next_char == '.' || next_char == '!' || next_char == '?')
+				{
+					continue;
+				}
+			}
+
+			// append
+			fixed_text[fixed_pointer] = space;
+			fixed_pointer = fixed_pointer + 1;
+
+			found_space = true;
+		}
+		// check punctuations
+		else if (original_text[i] == ',' || original_text[i] == '.' || original_text[i] == '!' || original_text[i] == '?')
+		{
+			found_space = false;
+
+			// Ignore trailing punctuations
+			if (found_punct)
+			{
+				continue;
+			}
+
+			// append
+			fixed_text[fixed_pointer] = original_text[i];
+			fixed_pointer = fixed_pointer + 1;
+
+			// if next char after punctuation is not space, then add space.
+			char next_char = original_text[i + 1];
+			if (next_char)
+			{
+				if (next_char != ' ')
+				{
+					// append
+					fixed_text[fixed_pointer] = space;
+					fixed_pointer = fixed_pointer + 1;
+				}
+			}
+
+			if (original_text[i] == '.' || original_text[i] == '!' || original_text[i] == '?')
+			{
+				next_upper = true;
+			}
+			found_punct = true;
+		}
+		// check alpha numerics
+		else if (isalnum(original_text[i]))
+		{
+			found_space = false;
+			found_punct = false;
+
+			if (next_upper)
+			{
+				fixed_text[fixed_pointer] = toupper(original_text[i]);
+				next_upper = false;
 			}
 			else
 			{
-				printf("%c", kalimat1[i]);
+				fixed_text[fixed_pointer] = tolower(original_text[i]);
 			}
-		}*/
-		else if (isalpha(kalimat[i]) && isspace(kalimat[i - 1]) && (kalimat[i - 2] == '?' || kalimat[i - 2] == '.' || kalimat[i - 2] == '!'))
-		{
-			printf("%c", toupper(kalimat[i]));
-		}
-		else if (i > 0)
-		{
-			printf("%c", kalimat1[i]);
+			fixed_pointer = fixed_pointer + 1;
 		}
 	}
 
+	printf("Original:\n%s\n\n", original_text);
+	printf("Fixed:\n%s", fixed_text);
 
-	getch();
+	return 0;
 }
