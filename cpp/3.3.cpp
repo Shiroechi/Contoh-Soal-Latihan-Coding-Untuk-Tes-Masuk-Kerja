@@ -1,118 +1,59 @@
 #include<stdio.h>
-#include<math.h>
-#include<conio.h>
 
-void main()
+// n = 5       n = 6 
+//   *           *
+//  **          **
+// ***         ***
+//  **         ***
+//   *          **
+//               *
+
+int main()
 {
-	int n, x, y, counter, bintang, spasi, batas;
-	bool lagi = true;
+	int n;
+	printf("n: ");
+	scanf("%d", &n);
 
-	spasi = 0;
-	counter = 0;
-	x = 0;
-	y = 0;
-	bintang = 1;
+	int middle_index = n / 2;
+	int max_column_length = n - middle_index;
 
-	while (lagi == true)
+	for (int i = 0; i < n; i++)
 	{
-		printf("masukan angka :");
-		scanf("%d", &n);
-
-		batas = (n + 1) / 2;
-
-		if (n % 2 == 1) // angka ganjil 
+		if (i < middle_index)
 		{
-			while (counter <= (n + 1) / 2) // bagian atas
+			for (int j = 0; j < max_column_length - (i + 1); j++)
 			{
-				while (spasi <= batas - 1) // spasi atas
-				{
-					printf(" ");
-					spasi++;
-				}
-				batas--;
-				spasi = 0;
-
-				while (bintang < counter)
-				{
-					printf("*");
-					bintang++;
-				}
-				printf("\n");
-				bintang = 0;
-				counter++;
+				printf(" ");
 			}
-			/*printf ("counter atas = %d\n", counter );*/
 
-			batas = 1;
-			while (counter - 1 > 0)// bagian bawah 
+			for (int j = 0; j < i + 1; j++)
 			{
-				while (spasi < batas) // spasi bawah
-				{
-					printf(" ");
-					spasi++;
-				}
-				batas++;
-				spasi = 0;
-
-				while (bintang < counter - 2)
-				{
-					printf("*");
-					bintang++;
-				}
-				printf("\n");
-				bintang = 0;
-				counter--;
+				printf("*");
 			}
 		}
-		else if (n % 2 == 0) // angka genap 
+		else 
 		{
-			while (counter <= (n + 1) / 2) // bagian atas
+			int space_count;
+			if (n % 2 == 0)
 			{
-				while (spasi <= batas - 1) // spasi atas
-				{
-					printf(" ");
-					spasi++;
-				}
-				batas--;
-				spasi = 0;
-
-				while (bintang < counter)
-				{
-					printf("*");
-					bintang++;
-				}
-				printf("\n");
-				bintang = 0;
-				counter++;
+				space_count = i;
 			}
-			/*printf ("counter atas = %d\n", counter );*/
-
-			batas = 1;
-			while (counter - 1 > 0) // bagian bawah 
+			else
 			{
-				while (spasi < batas) // spasi bawah
-				{
-					printf(" ");
-					spasi++;
-				}
-				batas++;
-				spasi = 0;
+				space_count = i + 1;
+			}
+			
+			for (int j = 0; j < space_count - max_column_length; j++)
+			{
+				printf(" ");
+			}
 
-				while (bintang < counter - 1)
-				{
-					printf("*");
-					bintang++;
-				}
-				printf("\n");
-				bintang = 0;
-				counter--;
+			for (int j = 0; j < n - i; j++)
+			{
+				printf("*");
 			}
 		}
-		else
-		{
-			lagi = false;
-		}
-
-		getch();
+		printf("\n");
 	}
+	return 0;
 }

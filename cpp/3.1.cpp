@@ -1,56 +1,35 @@
-
 #include<stdio.h>
-#include<math.h>
-#include<conio.h>
 
+// n: 5
+// abcdefghij
+// klmnopqrst
+// uvwxyzabcd
+// efghijklmn
+// opqrstuvwx
 
-void main ()
+int main()
 {
-	int n, counter, x, y;
-	counter = 1;
-	x = 0; y = 0;
-	char a;
-	a = 97;
-
-	printf ("masukan ukuran :");
+	int n;
+	printf("Masukan ukuran n: ");
 	scanf("%d", &n);
 
-	while (counter <= (n * (n*2)))
+	char character = 'a';
+	for (int i = 0; i < n; i++)
 	{
-		if (a >= 123)
+		for (int j = 0; j < 10; j++)
 		{
-			a = 97;
-		}
-		if (counter % (n * 2) == 0)
-		{
-			printf("%c", a);
-			a++;
-			printf("\n");
-		}
-		else 
-		{
-			printf("%c", a);
-			a++;
-		}
-		counter++;	
-	}
+			printf("%c", character);
 
-	printf("\n\n\n");
-	a = 97;
-	for (int i = 0; i < n * 2; i++)
-	{
-		for (int j = 0; j < n * 2; j++)
-		{
-			printf("%c ", a);
-			a++;
+			// Karakter berikutnya
+			character = character + 1;
 
-			if (a >= 123)
+			if (character > 'z')
 			{
-				a = 97;
+				character = 'a';
 			}
 		}
 		printf("\n");
 	}
 
-	getch();
+	return 0;
 }

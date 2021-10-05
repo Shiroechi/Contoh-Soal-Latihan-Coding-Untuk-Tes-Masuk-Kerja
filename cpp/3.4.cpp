@@ -1,51 +1,34 @@
 #include<stdio.h>
-#include<math.h>
-#include<conio.h>
-#include<windows.h>
 
-void main()
+int main()
 {
-	int n, counter;
-	bool lagi = true;
+	int n;
+	printf("n: ");
+	scanf("%d", &n);
 
-	while (lagi == true)
+	int middle_index = n;
+	for (int k = 0; k < n; k++)
 	{
-		counter = 1;
-		printf("masukan n:");
-		scanf("%d", &n);
-
-		//persegi
-		for (int i = n; i >= 0; i--)
+		for (int i = 0; i < n - k; i++)
 		{
-			for (int j = 0; j < i; j++)
+			// print persegi
+			for (int j = 0; j < n - k; j++)
 			{
-				for (int k = 0; k < i; k++)
-				{
-					printf("*");
-				}
+				printf("*");
+			}
 
-				printf("\n");
+			printf(" ");
+
+			// print segitiga
+			for (int j = 0; j < n - k - i; j++)
+			{
+				printf("*");
 			}
 
 			printf("\n");
 		}
-
-		//segitiga
-		for (int i = n; i > 0; i--)
-		{
-			for (int j = 0; j < i; j++)
-			{
-				for (int k = i; k > 0 + j; k--)
-				{
-					printf("*");
-				}
-
-				printf("\n");
-			}
-
-			printf("\n");
-		}
-
-		getch();
+		printf("\n");
 	}
+
+	return 0;
 }
