@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <time.h>
 
+
 void print_array(std::vector<int> &array)
 {
 	for (int i = 0; i < array.size(); i++)
